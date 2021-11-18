@@ -1,25 +1,36 @@
 <template>
   <div class="content">
-    <div class="container">
-      <div :v-if="data" v-for="drive in data" :key="drive.id">
-        <Drive :drive="drive"/>
-      </div>
+    <div class="radios">
+  <input type="radio" v-model="page" value="0">Angebote
+  <input type="radio" v-model="page" value="1">Angebot erstellen
+  <input type="radio" v-model="page" value="2">Meine Angebote  
+  </div>
+  <div v-if="data && page == 0">
+    <div  v-for="drive in data" :key="drive.id">
+    <Drive :drive="drive"/>
     </div>
+  </div>
+
+  <CreatedDrives v-if="page == 1"/>
+  <MyDrives v-if="page == 2"/>
+
   </div>
 </template>
 
 <script>
 import Drive from "../components/Drive"
+import CreatedDrives from "../components/CreatedDrives"
+import MyDrives from "../components/MyDrives"
 
   export default {
     data() {
       return {
-         data:Array
+        page:0,
+        data:Array
       }
     },
+
     created(){
-      console.log("createddd");
-      console.log("created");
       
       fetch('http://jakobloewe.com/api/carpools')
       .then(response => response.json())
@@ -28,7 +39,7 @@ import Drive from "../components/Drive"
 
     },
     components:{
-      Drive
+      Drive,CreatedDrives,MyDrives
     },
     methods: {
       
@@ -37,12 +48,6 @@ import Drive from "../components/Drive"
 </script>
 
 <style  scoped>
-.container{
-    width: 60%;
-    margin: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap:  wrap; 
-}
+.radios{justify-content: center;
+display: flex;margin-bottom: 20px;}
 </style>
