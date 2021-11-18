@@ -41,7 +41,6 @@ export default {
 
 }
 .info{
-        margin-bottom: 10px;
-
+    margin-bottom: 10px;
 }
 </style>
