@@ -3,7 +3,7 @@
     
     <b-form-checkbox id="input-group-0" v-model="isSeries" >Serie</b-form-checkbox>
 
-    <b-form @submit="onSubmit" >
+    <b-form class="form" @submit="onSubmit" >
       <b-form-group
         class="label"
         id="input-group-1"
@@ -90,11 +90,12 @@
         id="input-group-8"
         label="Fahrttyp:"
         label-for="input-8"
-      >      <b-form-radio-group class="label"
-        v-model="drive.cartype"
+      >      
+      <b-form-radio-group class="label"
+        v-model="drive.is_return_drive"
         :options=" [
-          { text: 'Rückfahrt', value: 'true' },
-          { text: 'Hinfahrt', value: 'false' },
+          { text: 'Rückfahrt', value: true },
+          { text: 'Hinfahrt', value: false },
         ]"
         name="plain-inline"
         plain
@@ -133,7 +134,7 @@
         label="Versicherung:"
         label-for="input-11"
       >
-        <b-form-checkbox id="input-group-11" v-model="drive.is_insured" required> ja</b-form-checkbox>
+        <b-form-checkbox id="input-group-11" v-model="drive.is_insured" required> </b-form-checkbox>
       </b-form-group>
 
    
@@ -143,7 +144,7 @@
         label="Umweg:"
         label-for="input-12"
       >
-        <b-form-checkbox  id="input-12" v-model="drive.allow_detour" required> erlauben</b-form-checkbox>
+        <b-form-checkbox  id="input-12" v-model="drive.allow_detour" required>  </b-form-checkbox>
       </b-form-group>
  
        <b-form-group class="label" id="input-group-13" label="freie Sitze:" label-for="input-4">
@@ -182,7 +183,7 @@
     ></b-form-textarea>
 
       </b-form-group >
-      <b-button  class="label" type="submit" variant="primary">Submit</b-button>
+      <b-button  class="button" type="submit" variant="primary">Angebot erstellen</b-button>
     </b-form>
   </div>
 </template>
@@ -193,6 +194,8 @@ import { BootstrapVue } from "bootstrap-vue"
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue);
+import eventBus from '../eventbus'
+
 const axios = require('axios');
 
   export default {
@@ -229,8 +232,9 @@ const axios = require('axios');
         event.preventDefault()
 
         axios
-        .post('http://jakobloewe.com/api/carpools',this.drive)
+        .post('https://jakobloewe.com/api/carpools',this.drive)
         .then(response => (console.log(response)))
+        eventBus.$emit('deleteCreatedDrive')
     
     },
       
@@ -243,7 +247,29 @@ const axios = require('axios');
 <style  scoped>
 .label{ margin-top: 6px;}
 .content{
-    width: 60%;
-    margin: auto;
+  border-radius: 25px;
+  border: 2px solid blue;
+  padding: 5px;
+  padding-top: 43px;
+  padding-right: 40px;
+  padding-bottom: 43px;
+  padding-left: 50px;
+  width: 60%;
+  margin: auto;
 }
+.button{
+    margin-top: 50px;
+    height: 50px;
+}
+.form{
+    display: flex;
+    flex-wrap: wrap;
+}
+.form > * {
+    margin-right:  10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly   ;
+}
+
 </style>

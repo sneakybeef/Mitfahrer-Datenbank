@@ -1,13 +1,15 @@
 <template>
   <div>
   <div  v-for="drive in data" :key="drive.id">
-    <Drive :drive="drive"/>
+    <ReservedDrive  :drive="drive"/>
   </div>
   </div>
 </template>
 
 <script>
-import Drive from "./Drive"
+import ReservedDrive from "./ReservedDrive"
+import eventBus from '../eventbus'
+
   export default {
     data() {
       return {
@@ -22,16 +24,45 @@ import Drive from "./Drive"
      
       }
     },
+
+    mounted() {
+    // adding eventBus listener
+    eventBus.$on('delete', () => {
+      fetch('https://jakobloewe.com/api/carpools/reserved')
+            .then(response => response.json())
+            .then(data => {console.log(data); this.data = data;
+            });
+    })
+  },
+  mounted() {
+    // adding eventBus listener
+    eventBus.$on('deleteReservedDrive', () => {
+      console.log("refresh CreatedDrives");
+      setTimeout((self) => {fetch('https://jakobloewe.com/api/carpools/reserved')
+            .then(response => response.json())
+            .then(data => {console.log(data); this.data = data;
+            });}, 1000);
+      
+      })
+    },
+  beforeDestroy() {
+    // removing eventBus listener
+    eventBus.$off('deleteReservedDrive')
+  },
+  beforeDestroy() {
+    // removing eventBus listener
+    eventBus.$off('delete')
+  },
     created(){
       
-      fetch('http://jakobloewe.com/api/carpools/reserved')
+      fetch('https://jakobloewe.com/api/carpools/reserved')
       .then(response => response.json())
       .then(data => {console.log(data); this.data=data;
       });
 
     },
     components:{
-      Drive
+      ReservedDrive
     },
     methods: {
       

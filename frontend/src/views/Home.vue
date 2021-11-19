@@ -1,13 +1,19 @@
 <template>
   <div class="content">
     <div class="radios">
-  <input type="radio" v-model="page" value="0">Angebote
-  <input type="radio" v-model="page" value="1">Angebot erstellen
-  <input type="radio" v-model="page" value="2">Meine Angebote  
+      <div class="radio">  
+        <input  type="radio" v-model="page" value="0">Angebote  
+      </div>
+    <div class="radio"> 
+  <input type="radio" v-model="page" value="1">Angebot erstellen 
+  </div>
+  <div class="radio"> 
+  <input type="radio" v-model="page" value="2">Meine Angebote   
+  </div>
   </div>
   <div v-if="data && page == 0">
     <div  v-for="drive in data" :key="drive.id">
-    <Drive :drive="drive"/>
+    <Drive  :drive="drive"/>
     </div>
   </div>
 
@@ -21,6 +27,7 @@
 import Drive from "../components/Drive"
 import CreatedDrives from "../components/CreatedDrives"
 import MyDrives from "../components/MyDrives"
+import eventBus from '../eventbus'
 
   export default {
     data() {
@@ -29,10 +36,24 @@ import MyDrives from "../components/MyDrives"
         data:Array
       }
     },
+       mounted() {
+    // adding eventBus listener
+    eventBus.$on('accept', () => {
+      console.log("accept");
+        setTimeout(() => {}, 1000);
+      fetch('https://jakobloewe.com/api/carpools/available')
+            .then(response => response.json())
+            .then(data => {console.log(data); this.data = data;
+            });
+    })
+  },
+  beforeDestroy() {
+    // removing eventBus listener
+    eventBus.$off('accept')
+  },
 
     created(){
-      
-      fetch('http://jakobloewe.com/api/carpools')
+      fetch('https://jakobloewe.com/api/carpools/available')
       .then(response => response.json())
       .then(data => {console.log(data); this.data=data;
       });

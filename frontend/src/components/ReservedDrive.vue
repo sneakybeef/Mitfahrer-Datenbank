@@ -23,9 +23,8 @@
     <div >Beschreibung: {{drive.description}}</div>
     </div>
     <div class="collumn5">
-       <button type="button" v-on:click="addDrive">Angebot annehmen</button> 
-       <button v-if="drive.to" type="button" v-on:click="addDriveSeries">AngebotSerie annehmen</button> 
-       
+       <button type="button" v-on:click="deleteDrive">Angebot stornieren</button> 
+       <button type="button" v-on:click="deleteDriveSeries">AngebotSerie stornieren</button> 
     </div>
 
     
@@ -59,17 +58,18 @@ export default {
        
    },
    methods:{
-     addDrive(){
+     deleteDrive(){
         axios
-        .post('https://jakobloewe.com/api/reservation/carpooldates/'+this.drive.carpooldate_id)
-        .then(response => (console.log(response)));
-        eventBus.$emit("accept");
+        .delete('https://jakobloewe.com/api/reservation/carpooldates/'+this.drive.carpooldate_id)
+        .then(response => (console.log(response)))
+
+        eventBus.$emit("deleteReservedDrive");
      },
-      addDriveSeries(){
+      deleteDriveSeries(){
         axios
-        .post('https://jakobloewe.com/api/reservation/carpools/'+this.drive.id)
-        .then(response => (console.log(response)));
-        eventBus.$emit("accept");
+        .delete('https://jakobloewe.com/api/reservation/carpools/'+this.drive.id)
+        .then(response => (console.log(response)))
+      this.$emit("deleteReservedDrive");
 
      }
    }

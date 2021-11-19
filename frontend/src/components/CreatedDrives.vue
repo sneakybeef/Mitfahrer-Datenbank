@@ -1,15 +1,16 @@
 <template>
   <div>
  <CreateDrive class="formCreate"/>
-  <div  v-for="drive in data" :key="drive.id">
-    <Drive :drive="drive"/>
+  <div  v-for="drive in data" :key="drive.carpooldate_id">
+    <CreatedDrive  :drive="drive"/>
   </div>
   </div>
 </template>
 
 <script>
-import Drive from "./Drive"
+import CreatedDrive from "./CreatedDrive"
 import CreateDrive from "./CreateDrive"
+import eventBus from '../eventbus'
 
   export default {
     data() {
@@ -18,18 +19,30 @@ import CreateDrive from "./CreateDrive"
         data:Array
       }
     },
-
-    created(){
+    mounted() {
+    // adding eventBus listener
+    eventBus.$on('deleteCreatedDrive', () => {
+      console.log("refresh CreatedDrives");
+      setTimeout((self) => {fetch('https://jakobloewe.com/api/carpools/created')
+            .then(response => response.json())
+            .then(data => {console.log(data); this.data = data;
+            });}, 1000);
       
-      fetch('http://jakobloewe.com/api/carpools/created')
-      .then(response => response.json())
-      .then(data => {console.log(data); this.data=data;
-      });
-
+      })
+    },
+  beforeDestroy() {
+    // removing eventBus listener
+    eventBus.$off('deleteCreatedDrive')
+  },
+    created(){
+       fetch('https://jakobloewe.com/api/carpools/created')
+          .then(response => response.json())
+          .then(data => {console.log(data); this.data=data;
+          });
     },
     components:{
-      Drive,
-      CreateDrive
+      CreateDrive,
+      CreatedDrive
     },
     methods: {
       
