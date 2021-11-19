@@ -70,5 +70,10 @@ import eventBus from '../eventbus'
 
 <style  scoped>
 .radios{justify-content: center;
-display: flex;margin-bottom: 20px;}
+display: flex;margin-bottom: 20px;
+margin-right: 10px;
+}
+.radio{
+margin-right: 10px;
+}
 </style>

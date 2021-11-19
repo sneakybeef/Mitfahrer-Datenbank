@@ -23,8 +23,7 @@
     <div >Beschreibung: {{drive.description}}</div>
     </div>
     <div class="collumn5">
-       <button type="button" v-on:click="addDrive">Angebot annehmen</button> 
-       <button v-if="drive.to" type="button" v-on:click="addDriveSeries">AngebotSerie annehmen</button> 
+       <button class="button-book" type="button" v-on:click="addDrive">reservieren</button> 
        
     </div>
 
@@ -41,6 +40,9 @@
     <div>
     <div>Interval: {{drive.interval}}</div>
   </div>
+  <div>       
+    <button class="button" v-if="drive.to" type="button" v-on:click="addDriveSeries">Serie reservieren</button> 
+</div>
   </div>
   </div>
   </div>
@@ -78,9 +80,25 @@ export default {
 
 <style>
 
+.button-book {
+height: 40px;
+width: 130px;
+border-radius: 5px;
+margin-right: 30px;
+background-color: #5B9BD5;
+}
+
+.button {
+margin-left: 120px;
+width: 180px;
+height: 30px;
+
+background-color: #5B9BD5;
+}
 .driveContainer{
   border-radius: 25px;
-  border: 2px solid blue;
+  border: 2px solid #5B9BD5;
+  
   padding: 5px;
   margin-bottom: 30px;
   margin-right: 2.5%;
@@ -103,7 +121,7 @@ export default {
 
 }
 .seriesBorder{
-  border-top: 2px solid blue;
+  border-top: 2px solid #5B9BD5;
   margin-top:10px;
   margin-bottom: 5px;
 }

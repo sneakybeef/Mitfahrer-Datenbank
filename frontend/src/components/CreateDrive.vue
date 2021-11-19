@@ -248,7 +248,7 @@ const axios = require('axios');
 .label{ margin-top: 6px;}
 .content{
   border-radius: 25px;
-  border: 2px solid blue;
+  border: 2px solid #5B9BD5;
   padding: 5px;
   padding-top: 43px;
   padding-right: 40px;
